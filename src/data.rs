@@ -1,43 +1,19 @@
-use druid::{
-    im::Vector,
-    Data, Lens, EventCtx, Env
-};
+use druid::{Data, Lens};
+use druid::im::Vector;
+
+use crate::station::Station;
+
 
 #[derive(Clone, Data, Lens)]
 pub struct AppState {
-    new_todo: String,
-    todos: Vector<TodoItem>,
+    pub stations: Vector<Station>,
 }
+
 
 impl AppState {
-    pub fn new(todos: Vec<TodoItem>) -> Self {
-        Self {
-            new_todo: "".into(),
-            todos: Vector::from(todos),
-        }
-    }
-
-    fn add_todo(&mut self) {
-        self.todos.push_front(TodoItem::new(&self.new_todo));
-        self.new_todo = "".into();
-    }
-
-    pub fn click_add(_ctx: &mut EventCtx, data: &mut Self, _env: &Env) {
-        data.add_todo();
-    }
-}
-
-#[derive(Clone, Data, Lens)]
-pub struct TodoItem {
-    done: bool,
-    text: String,
-}
-
-impl TodoItem {
-    pub fn new(text: &str) -> Self {
-        Self {
-            done: false,
-            text: text.into(),
+    pub fn new(stations: Vec<Station>) -> Self {
+        return Self {
+            stations: Vector::from(stations),
         }
     }
 }

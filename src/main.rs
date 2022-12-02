@@ -2,26 +2,39 @@ use druid::{AppLauncher, WindowDesc};
 
 mod data;
 use data::AppState;
-use data::TodoItem;
 
-mod controllers;
+mod departure;
 
-mod view;
-use view::build_ui;
+mod station;
+use station::Station;
 
 mod delegate;
 use delegate::Delegate;
 
-pub fn main() {
+mod dbf_api;
+
+mod app_state_controller;
+
+mod view;
+use view::build_ui;
+
+
+#[tokio::main]
+pub async fn main() {
     let main_window = WindowDesc::new(build_ui)
-        .title("Todo Tutorial")
+        .title("DBDepartureInfo")
         .window_size((400.0, 400.0));
 
-    let todos = vec![TodoItem::new("thing one"), TodoItem::new("thing two")];
-    let initial_state = AppState::new(todos);
+    let initial_state = AppState::new(
+        vec![
+        Station::new("MHEM".to_string(), Vec::new()),
+        Station::new("MHEM".to_string(), Vec::new()),
+        Station::new("MHEM".to_string(), Vec::new()),
+        Station::new("MHEM".to_string(), Vec::new()),
+        ]);
 
     AppLauncher::with_window(main_window)
-        .delegate(Delegate {})
+        .delegate(Delegate::new())
         .launch(initial_state)
         .expect("Failed to launch application");
 }
