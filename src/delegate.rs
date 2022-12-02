@@ -41,7 +41,6 @@ impl AppDelegate<AppState> for Delegate {
         _env: &Env,
     ) -> Handled {
         if cmd.is(API_CALL) {
-            println!("it woorked!");
             self.update_departures(data);
             Handled::Yes
         } else {
