@@ -1,0 +1,27 @@
+use druid::{AppLauncher, WindowDesc};
+
+mod data;
+use data::AppState;
+use data::TodoItem;
+
+mod controllers;
+
+mod view;
+use view::build_ui;
+
+mod delegate;
+use delegate::Delegate;
+
+pub fn main() {
+    let main_window = WindowDesc::new(build_ui)
+        .title("Todo Tutorial")
+        .window_size((400.0, 400.0));
+
+    let todos = vec![TodoItem::new("thing one"), TodoItem::new("thing two")];
+    let initial_state = AppState::new(todos);
+
+    AppLauncher::with_window(main_window)
+        .delegate(Delegate {})
+        .launch(initial_state)
+        .expect("Failed to launch application");
+}
