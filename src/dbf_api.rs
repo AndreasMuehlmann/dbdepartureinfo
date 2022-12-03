@@ -39,15 +39,22 @@ impl DBFAPI {
         let mut departures = Vec::new();
         for departure_json in departures_json {
             let departure = Departure::new(
-                departure_json["scheduledDeparture"].as_str().unwrap().trim_end().trim_start().to_string(),
+                Self::unwrap_option_or_empty_str(departure_json["scheduledDeparture"].as_str()).trim_end().trim_start().to_string(),
                 departure_json["delayDeparture"].to_string(),
-                departure_json["destination"].as_str().unwrap().trim_end().trim_start().to_string(),
-                departure_json["scheduledPlatform"].as_str().unwrap().trim_end().trim_start().to_string(),
-                departure_json["train"].as_str().unwrap().trim_end().trim_start().to_string(),
+                Self::unwrap_option_or_empty_str(departure_json["destination"].as_str()).trim_end().trim_start().to_string(),
+                Self::unwrap_option_or_empty_str(departure_json["scheduledPlatform"].as_str()).trim_end().trim_start().to_string(),
+                Self::unwrap_option_or_empty_str(departure_json["train"].as_str()).trim_end().trim_start().to_string(),
                 );
             departures.push(departure);
         }
         return departures;
+    }
+
+    fn unwrap_option_or_empty_str(str_option: Option<&str>) -> &str {
+        return match str_option {
+                Some(unwrapped_str) => unwrapped_str,
+                None => "None",
+        }
     }
 }
 
