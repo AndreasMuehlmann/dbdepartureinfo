@@ -1,5 +1,4 @@
 use druid::{AppDelegate, Command, DelegateCtx, Env, Handled, Selector, Target};
-use futures::executor::block_on;
 
 use crate::data::AppState;
 use crate::dbf_api::DBFAPI;
@@ -24,7 +23,7 @@ impl Delegate {
 
     fn update_departures(&mut self, data: &mut AppState) {
         for i in 0..data.stations.len() {
-            let departures: Vec<Departure> = block_on(self.dbf_api.get_departures(data.stations[i].name.clone()));
+            let departures: Vec<Departure> = self.dbf_api.get_departures(data.stations[i].name.clone());
             data.stations[i].set_departures(departures);
         }
     }

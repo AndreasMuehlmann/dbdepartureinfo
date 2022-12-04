@@ -1,4 +1,4 @@
-use druid::{AppLauncher, WindowDesc};
+use druid::{AppLauncher, WindowDesc, WindowState};
 
 mod data;
 use data::AppState;
@@ -19,11 +19,10 @@ mod view;
 use view::build_ui;
 
 
-#[tokio::main]
-pub async fn main() {
+pub fn main() {
     let main_window = WindowDesc::new(build_ui)
         .title("DBDepartureInfo")
-        .window_size((400.0, 400.0));
+        .set_window_state(WindowState::MAXIMIZED);
 
     let initial_state = AppState::new(
         vec![

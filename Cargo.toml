@@ -8,7 +8,5 @@ edition = "2021"
 [dependencies]
 druid = { version = "*", features = ["im"]}
 reqwest = { version = "*", features = ["blocking"] }
-tokio = { version = "*", features = ["full"] }
-futures = "*"
 serde = { version = "*", features = ["derive"] }
 serde_json = "*"

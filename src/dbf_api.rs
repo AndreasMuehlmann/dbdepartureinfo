@@ -1,6 +1,6 @@
 use serde_json::Value;
 use reqwest::Error;
-use reqwest::Response;
+use reqwest::blocking::Response;
 
 use super::departure::Departure;
 
@@ -18,19 +18,20 @@ impl DBFAPI {
     }
 
 
-    pub async fn get_departures(&self, name: String) -> Vec<Departure> {
-        let response: Response = self.get_api_response(name).await.unwrap();
-        let txt_response: &str = &response.text().await.unwrap();
+    pub fn get_departures(&self, name: String) -> Vec<Departure> {
+        let response: Response = self.get_api_response(name).unwrap();
+        let txt_response: &str = &response.text().unwrap();
         let parsed_json: Value = serde_json::from_str(txt_response).unwrap();
         let departures = self.to_vector_struct_departures(parsed_json);
         return departures;
     }
 
-    async fn get_api_response(&self, name: String) -> Result<Response, Error> {
+    fn get_api_response(&self, name: String) -> Result<Response, Error> {
         let request_url = format!("https://dbf.finalrewind.org/{}.json?version=3&limit={}",
                                   name,
                                   self.departure_limit);
-        let response = reqwest::get(&request_url).await?;
+
+        let response = reqwest::blocking::get(&request_url)?;
         return Ok(response);
     }
 
