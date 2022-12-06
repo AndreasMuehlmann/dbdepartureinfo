@@ -17,20 +17,23 @@ impl DBFAPI {
         } 
     }
 
-
     pub fn get_departures(&self, name: String) -> Vec<Departure> {
-        let response: Response = self.get_api_response(name).unwrap();
+        let result_response: Result<Response, Error> = self.get_api_response(&name);
+        let response = match result_response {
+            Ok(response) => response,
+            Err(..) => {
+                return self.get_departures(name);
+            },
+        };
         let txt_response: &str = &response.text().unwrap();
         let parsed_json: Value = serde_json::from_str(txt_response).unwrap();
         let departures = self.to_vector_struct_departures(parsed_json);
         return departures;
     }
 
-    fn get_api_response(&self, name: String) -> Result<Response, Error> {
+    fn get_api_response(&self, name: &String) -> Result<Response, Error> {
         let request_url = format!("https://dbf.finalrewind.org/{}.json?version=3&limit={}",
-                                  name,
-                                  self.departure_limit);
-
+                                  name, self.departure_limit);
         let response = reqwest::blocking::get(&request_url)?;
         return Ok(response);
     }
@@ -54,7 +57,7 @@ impl DBFAPI {
     fn unwrap_option_or_empty_str(str_option: Option<&str>) -> &str {
         return match str_option {
                 Some(unwrapped_str) => unwrapped_str,
-                None => "None",
+                None => "Error",
         }
     }
 }
