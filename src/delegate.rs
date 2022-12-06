@@ -6,7 +6,7 @@ use crate::departure::Departure;
 
 
 pub const API_CALL: Selector = Selector::new("API_CALL");
-const DEPARTURE_LIMIT: u32 = 5;
+const DEPARTURE_LIMIT: u32 = 4;
 
 
 pub struct Delegate {

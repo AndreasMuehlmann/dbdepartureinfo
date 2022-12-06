@@ -3,10 +3,12 @@ use druid::{AppLauncher, WindowDesc, WindowState};
 mod data;
 use data::AppState;
 
-mod departure;
-
 mod station;
 use station::Station;
+
+mod departure;
+
+mod message;
 
 mod delegate;
 use delegate::Delegate;

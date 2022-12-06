@@ -9,6 +9,7 @@ use crate::app_state_controller::AppStateController;
 use crate::data::AppState;
 use crate::station::Station;
 use crate::departure::Departure;
+use crate::message::Message;
 
 
 pub fn build_ui() -> impl Widget<AppState> {
@@ -38,18 +39,30 @@ fn get_font_descriptor_head_line() -> druid::FontDescriptor {
 }
 
 fn build_departure() -> impl Widget<Departure> {
-    return Flex::row()
-        .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.train)).with_text_color(Color::GREEN).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0))
-        .with_spacer(50.0)
-        .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.destination)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(250.0, 30.0))
-        .with_spacer(250.0)
-        .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.scheduled_departure)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(60.0, 30.0))
-        .with_spacer(60.0)
-        .with_child(Label::new(|data: &Departure, _: &Env| format!("+{}", data.delay_departure)).with_text_color(Color::RED).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0))
-        .with_spacer(50.0)
-        .with_child(Label::new(|data: &Departure, _: &Env| format!("Gleis {}", data.scheduled_platform)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0));
+    return Flex::column()
+        .with_child(
+            Flex::row()
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.train)).with_text_color(Color::GREEN).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0))
+                .with_spacer(50.0)
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.destination)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(250.0, 30.0))
+                .with_spacer(250.0)
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.scheduled_departure)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(60.0, 30.0))
+                .with_spacer(60.0)
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("+{}", data.delay_departure)).with_text_color(Color::RED).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0))
+                .with_spacer(50.0)
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("Gleis {}", data.scheduled_platform)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_size(50.0, 30.0))
+        )
+        .with_child(List::new(build_message).lens(Departure::messages));
 }
 
 fn get_font_descriptor_departure_element() -> druid::FontDescriptor {
     return FontDescriptor::new(FontFamily::SERIF).with_style(FontStyle::Regular).with_size(20.0).with_weight(FontWeight::NORMAL);
+}
+
+fn build_message() -> impl Widget<Message> {
+    return Label::new(|data: &Message, _: &Env| format!("{}", data.message)).with_text_color(Color::RED).with_font(get_font_descriptor_message()).fix_width(600.0);
+}
+
+fn get_font_descriptor_message() -> druid::FontDescriptor {
+    return FontDescriptor::new(FontFamily::SERIF).with_style(FontStyle::Regular).with_size(10.0).with_weight(FontWeight::NORMAL);
 }
