@@ -32,9 +32,7 @@ use utils::text_value_to_string;
 mod tests;
 
 
-// TODO: handle error when api call returns error
 // TODO: write README.md
-// TODO: look what LICENSE is required by dbf
 
 
 fn read_stations_from_file() -> Vec<Station> {
