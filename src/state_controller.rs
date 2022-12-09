@@ -3,18 +3,19 @@ use std::time::Duration;
 use druid::{Event, Env, EventCtx, Widget, TimerToken};
 use druid::widget::Controller;
 
-use crate::data::*;
-
+use crate::state::State;
 use crate::delegate::API_CALL;
 
 
 const API_CALL_INTERVAL: Duration = Duration::from_secs(60);
 
-pub struct AppStateController {
+
+pub struct StateController {
     timer_id: TimerToken,
 }
 
-impl AppStateController {
+
+impl StateController {
     pub fn new() -> Self {
         return Self {
             timer_id: TimerToken::INVALID,
@@ -22,13 +23,14 @@ impl AppStateController {
     }
 }
 
-impl<W: Widget<AppState>> Controller<AppState, W> for AppStateController {
+
+impl<W: Widget<State>> Controller<State, W> for StateController {
     fn event(
         &mut self,
         child: &mut W,
         ctx: &mut EventCtx,
         event: &Event,
-        data: &mut AppState,
+        data: &mut State,
         env: &Env
         ) {
         match event {

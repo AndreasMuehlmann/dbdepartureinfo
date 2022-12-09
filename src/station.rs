@@ -6,15 +6,17 @@ use crate::departure::Departure;
 
 #[derive(Clone, Data, Lens)]
 pub struct Station {
-    pub name: String,
+    pub displayed_name: String,
+    pub api_name: String,
     pub departures: Vector<Departure>,
 }
 
 
 impl Station {
-    pub fn new(name: String, departures: Vec<Departure>) -> Self {
+    pub fn new(displayed_name: String, api_name: String, departures: Vec<Departure>) -> Self {
         return Self {
-            name,
+            displayed_name,
+            api_name,
             departures: Vector::from(departures),
         }
     }

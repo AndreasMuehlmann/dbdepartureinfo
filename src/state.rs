@@ -5,12 +5,12 @@ use crate::station::Station;
 
 
 #[derive(Clone, Data, Lens)]
-pub struct AppState {
+pub struct State {
     pub stations: Vector<Station>,
 }
 
 
-impl AppState {
+impl State {
     pub fn new(stations: Vec<Station>) -> Self {
         return Self {
             stations: Vector::from(stations),

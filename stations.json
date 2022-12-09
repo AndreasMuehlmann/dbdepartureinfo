@@ -1,0 +1,8 @@
+{"stations":
+    [
+        {"displayed_name": "Vaterstetten", "api_name": "MVS"},
+        {"displayed_name": "Haar", "api_name": "MHR"},
+        {"displayed_name": "Gronsdorf", "api_name": "MGDF"},
+        {"displayed_name": "Trudering", "api_name": "MTR"}
+    ]
+}

@@ -3,7 +3,7 @@ use reqwest::Error;
 use reqwest::blocking::Response;
 
 use crate::departure::Departure;
-use crate::message::Message;
+use crate::utils::{messages_to_vec, text_value_to_string};
 
 
 pub struct DBFAPI {
@@ -41,50 +41,33 @@ impl DBFAPI {
     }
 
     fn to_vector_struct_departures(&self, parsed_json: Value) -> Vec<Departure>{
-        let departures_json = parsed_json["departures"].as_array().unwrap();
+        let departures_value = parsed_json["departures"].as_array().unwrap();
         let mut departures = Vec::new();
-        for departure_json in departures_json {
-            let mut qos_messages = Self::messages_to_vec(&departure_json["messages"]["qos"]);
-            let delay_messages = Self::messages_to_vec(&departure_json["messages"]["delay"]);
+        for departure_value in departures_value {
+            let mut qos_messages = messages_to_vec(&departure_value["messages"]["qos"]);
+            let delay_messages = messages_to_vec(&departure_value["messages"]["delay"]);
             qos_messages.extend(delay_messages);
             let departure = Departure::new(
-                Self::text_value_to_string(&departure_json["scheduledDeparture"]),
-                departure_json["delayDeparture"].to_string(),
-                Self::text_value_to_string(&departure_json["destination"]),
-                Self::text_value_to_string(&departure_json["scheduledPlatform"]),
-                Self::text_value_to_string(&departure_json["train"]),
+                text_value_to_string(&departure_value["scheduledDeparture"]),
+                departure_value["delayDeparture"].to_string(),
+                text_value_to_string(&departure_value["destination"]),
+                text_value_to_string(&departure_value["scheduledPlatform"]),
+                text_value_to_string(&departure_value["train"]),
                 qos_messages, 
                 );
             departures.push(departure);
         }
         return departures;
     }
-
-    fn messages_to_vec(val_messages: &Value) -> Vec<Message> {
-        let mut messages: Vec<Message> = Vec::new();
-        for message in  val_messages.as_array().unwrap() {
-            messages.push(Message::new(Self::text_value_to_string(&message["text"])));
-        }
-        return messages;
-    }
-
-    fn text_value_to_string(text_val: &Value) -> String {
-        return Self::unwrap_option_or_empty_str(text_val.as_str()).trim_end().trim_start().to_string();
-    }
-    
-    fn unwrap_option_or_empty_str(str_option: Option<&str>) -> &str {
-        return match str_option {
-                Some(unwrapped_str) => unwrapped_str,
-                None => "Error",
-        }
-    }
 }
 
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use serde_json::Value;
+
+    use crate::dbf_api::DBFAPI;
+
 
     fn create_dbf_api() -> DBFAPI {
         return DBFAPI::new(1);

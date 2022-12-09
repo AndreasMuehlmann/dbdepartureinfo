@@ -14,14 +14,3 @@ impl Message {
         }
     }
 }
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn create_message() {
-        Message::new("This is a message.".to_string());
-    }
-}

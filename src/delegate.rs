@@ -1,6 +1,6 @@
 use druid::{AppDelegate, Command, DelegateCtx, Env, Handled, Selector, Target};
 
-use crate::data::AppState;
+use crate::state::State;
 use crate::dbf_api::DBFAPI;
 use crate::departure::Departure;
 
@@ -21,22 +21,22 @@ impl Delegate {
         }
     }
 
-    fn update_departures(&mut self, data: &mut AppState) {
+    fn update_departures(&mut self, data: &mut State) {
         for i in 0..data.stations.len() {
-            let departures: Vec<Departure> = self.dbf_api.get_departures(data.stations[i].name.clone());
+            let departures: Vec<Departure> = self.dbf_api.get_departures(data.stations[i].api_name.clone());
             data.stations[i].set_departures(departures);
         }
     }
 }
 
 
-impl AppDelegate<AppState> for Delegate {
+impl AppDelegate<State> for Delegate {
     fn command(
         &mut self,
         _ctx: &mut DelegateCtx<'_>,
         _target: Target,
         cmd: &Command,
-        data: &mut AppState,
+        data: &mut State,
         _env: &Env,
     ) -> Handled {
         if cmd.is(API_CALL) {

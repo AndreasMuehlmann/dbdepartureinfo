@@ -29,15 +29,3 @@ impl Departure {
         }
     }
 }
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn create_depature() {
-        Departure::new("3:00".to_string(), "3.3".to_string(), "Grafing".to_string(),
-        "1".to_string(), "S 6".to_string(), vec![Message::new("error".to_string())]);
-    }
-}
