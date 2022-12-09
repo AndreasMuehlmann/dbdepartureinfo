@@ -51,9 +51,15 @@ impl DBFAPI {
             let mut qos_messages = messages_to_vec(&departure_value["messages"]["qos"]);
             let delay_messages = messages_to_vec(&departure_value["messages"]["delay"]);
             qos_messages.extend(delay_messages);
+            let mut delay_departure = departure_value["delayDeparture"].to_string();
+            if delay_departure == "null".to_string() {
+                delay_departure = "".to_string();
+            } else {
+                delay_departure = format!("+{}", delay_departure);
+            }
             let departure = Departure::new(
                 text_value_to_string(&departure_value["scheduledDeparture"]),
-                departure_value["delayDeparture"].to_string(),
+                delay_departure,
                 text_value_to_string(&departure_value["destination"]),
                 text_value_to_string(&departure_value["scheduledPlatform"]),
                 text_value_to_string(&departure_value["train"]),

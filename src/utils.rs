@@ -18,6 +18,6 @@ pub fn text_value_to_string(text_val: &Value) -> String {
 pub fn unwrap_option_or_empty_str(str_option: Option<&str>) -> &str {
     return match str_option {
             Some(unwrapped_str) => unwrapped_str,
-            None => "Error",
+            None => "",
     }
 }

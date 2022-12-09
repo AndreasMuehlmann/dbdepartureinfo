@@ -48,7 +48,7 @@ fn build_departure() -> impl Widget<Departure> {
                 .with_spacer(250.0)
                 .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.scheduled_departure)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_width(60.0))
                 .with_spacer(60.0)
-                .with_child(Label::new(|data: &Departure, _: &Env| format!("+{}", data.delay_departure)).with_text_color(Color::RED).with_font(get_font_descriptor_departure_element()).fix_width(50.0))
+                .with_child(Label::new(|data: &Departure, _: &Env| format!("{}", data.delay_departure)).with_text_color(Color::RED).with_font(get_font_descriptor_departure_element()).fix_width(50.0))
                 .with_spacer(50.0)
                 .with_child(Label::new(|data: &Departure, _: &Env| format!("Gleis {}", data.scheduled_platform)).with_text_color(Color::WHITE).with_font(get_font_descriptor_departure_element()).fix_width(50.0))
         )
